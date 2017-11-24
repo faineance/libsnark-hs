@@ -15,7 +15,8 @@ jobs:
       - run:
           name: Install system dependencies
           command: |
-            apt-get install -y build-essential cmake git libgmp3-dev libprocps4-dev libboost-all-dev libssl-dev
+            apt-get update
+            apt-get install -y  cmake libgmp-dev libprocps-dev libboost-all-dev libssl-dev
       - run:
           name: Install libsnark
           command: |
