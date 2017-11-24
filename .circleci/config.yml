@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: haskell:8.2.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - libsnark-hs-{{ .Branch }}-{{ checksum "package.yaml" }}
+            - libsnark-hs
+          paths:
+            - ./.stack-work/
+            - ~/.stack/
+      - run:
+          name: Install system dependencies
+            apt-get install -y build-essential cmake git libgmp3-dev libprocps4-dev libboost-all-dev libssl-dev
+      - run:
+          name: Install libsnark
+          command: |
+            git clone  --recursive https://github.com/scipr-lab/libsnark
+            mkdir build && cd build && cmake ..
+            make install
+      - run:
+          name: Install haskell dependencies
+          command: |
+             stack install --only-dependencies  --system-ghc
+
+      - run:
+          name: Build and test
+          command: |
+             stack build --only-dependencies --test --system-ghc
+
+      - save_cache:
+          key: libsnark-hs-{{ .Branch }}-{{ checksum "package.yaml" }}
+          paths:
+            - ./.stack-work/
+            - ~/.stack/
+
+
