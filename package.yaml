@@ -1,0 +1,27 @@
+name:                libsnark-hs
+version:             0.1.0.0
+#synopsis:
+#description:
+homepage:            https://github.com/githubuser/libsnark-hs#readme
+license:             MIT
+author:              Author name here
+maintainer:          example@example.com
+copyright:           2017 Author name here
+category:            Web
+extra-source-files:
+- README.md
+
+dependencies:
+  - base >= 4.7 && < 5
+
+library:
+  source-dirs:      src
+
+  cpp-options:        -Wall -std=c++11 -I  /usr/local/include/libsnark/
+  include-dirs:       cbits
+
+  extra-libraries:
+    - snark
+
+  c-sources:
+    - cbits/wrap.cpp
